@@ -55,7 +55,7 @@ function getBrowser() {
 
     foreach ($browser_array as $regex => $value) {
         if (preg_match($regex, $_SERVER['HTTP_USER_AGENT'])) {
-            $browser    =   $value;
+            $browser = $value;
         }
 
     }
