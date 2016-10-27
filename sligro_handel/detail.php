@@ -1,11 +1,17 @@
 <?php
     include_once("querybuilder.php");
     $db = new QueryBuilder("sligro_groothandel");
-    $factuur_id = $_GET['id'];
-    $factuur = $db->getTableById('factuur', $factuur_id);
-    $bedrijf = $db->getTableById('bedrijf', $factuur['bedrijf_id']);
-    $klant = $db->getTableById('klant', $factuur['klant_id']);
-    $artikel = $db->getBesteldeArtikel($factuur_id);
+
+    if(isset($_GET['id'])) {
+        $factuur_id = $_GET['id'];
+
+        $factuur = $db->getTableById('factuur', $factuur_id);
+        $bedrijf = $db->getTableById('bedrijf', $factuur['bedrijf_id']);
+        $klant = $db->getTableById('klant', $factuur['klant_id']);
+        $artikelen = $db->getBesteldeArtikelen($factuur_id);
+        $prijs_details = $db->getTotaal($artikelen, $factuur['korting']);
+        print_r($prijs_details);
+    }
 ?>
 
 <table>
@@ -41,16 +47,18 @@
         <th>prijs</th>
         <th>bedrag</th>
     </tr>
-    <tr>
-        <td>artikelid</td>
-        <td>artikelomschrijving</td>
-        <td>besteldeartikelaantal</td>
-        <td>artikelprijs</td>
-        <td>artikelprijs * besteldeartikelaantal</td>
-    </tr>
+    <?php
+        foreach($artikelen as $artikel) {
+            echo "<tr>";
+            echo "<td>" . $artikel['id'] . "</td>";
+            echo "<td>" . $artikel['omschrijving'] . "</td>";
+            echo "<td>" . $artikel['aantal'] . "</td>";
+            echo "<td>" . $artikel['prijs'] . "</td>";
+            echo "<td>" . $artikel['prijs'] * $artikel['aantal']  . "</td>";
+            echo "</tr>";
+        }
+    ?>
 </table>
-
-
 
 <html>
   <head>

@@ -6,7 +6,7 @@
     foreach($facturen as &$factuur) {
         $klant = $db->getTableById("klant", $factuur['klant_id']);
         echo "<a href='detail.php?id=" . $factuur['id'] . "'>";
-        echo $klant[0]["naam"];
+        echo $klant["naam"];
         echo '</a>';
         echo '<br />';
     }
