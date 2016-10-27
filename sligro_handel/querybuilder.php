@@ -22,6 +22,7 @@
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             $result = call_user_func_array('array_merge', $result);
+
             return $result;
         }
 
@@ -45,13 +46,13 @@
             $query = $this->db->prepare("SELECT * FROM $this->table_factuur");
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
             return $result;
         }
 
         public function getTotaal($artikelen, $korting) {
             $totaal_details = [];
             $subtotaal = 0;
-
 
             foreach ($artikelen as $artikel) {
                     $subtotaal  += $artikel['prijs'] * $artikel['aantal'];
@@ -72,6 +73,7 @@
             $flat = array();
             $RII = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
             foreach ($RII as $value) $flat[] = $value;
+            
             return $flat;
         }
     }
