@@ -1,5 +1,5 @@
 <?php
-    include_once("querybuilder.php");
+    require_once("querybuilder.php");
     $db = new QueryBuilder("sligro_groothandel");
 
     if(isset($_GET['id'])) {
@@ -10,13 +10,12 @@
         $klant = $db->getTableById('klant', $factuur['klant_id']);
         $artikelen = $db->getBesteldeArtikelen($factuur_id);
         $prijs_details = $db->getTotaal($artikelen, $factuur['korting']);
-        print_r($prijs_details);
     }
 ?>
 
 <table>
     <tr>
-        <td>
+        <td class="table-half">
             <?php
                 foreach (array_reverse($bedrijf) as $key => $value) {
                     if($key !== "id") {
@@ -25,7 +24,7 @@
                 }
             ?>
         </td>
-        <td>
+        <td class="table-half">
             <p><?= "Factuurcode: $factuur_id"?></p>
             <p><?= "Datum: " . $factuur["datum"]; ?></p>
         </td>
@@ -34,9 +33,9 @@
         foreach ($klant as $key => $value) {
             if($key !== "id") {
                 echo "<tr>";
-                echo "<td>" . ucfirst($key) . "</td>";
+                echo "<td class=\"table-quarter\">" . ucfirst($key) . "</td>";
                 echo "<td> $value </td>";
-                echo "</tr>";
+                echo "</tr class=\"table-quarter\">";
             }
         }
     ?>
@@ -58,6 +57,26 @@
             echo "</tr>";
         }
     ?>
+    <tr>
+        <td>Subtotaal</td>
+        <td><?= $prijs_details['subtotaal']?></td>
+    <tr>
+    <tr>
+        <td>Korting</td>
+        <td><?= $prijs_details['korting']?></td>
+    <tr>
+    <tr>
+        <td>Totaal excl. btw</td>
+        <td><?= $prijs_details['totaalexc']?></td>
+    <tr>
+    <tr>
+        <td>21&#37; btw</td>
+        <td><?= $prijs_details['btw']?></td>
+    <tr>
+    <tr>
+        <td>Totaal</td>
+        <td><?= $prijs_details['totaal']?></td>
+    <tr>
 </table>
 
 <html>
@@ -68,12 +87,28 @@
         table {
           border-collapse: collapse;
           border: 1px solid black;
+          width: 700px;
         }
 
         td {
           border: 1px solid black;
           width: 100px;
+          overflow: hidden;
         }
+
+        tr {
+            width: 100%;
+        }
+
+        .table-half {
+            width: 50%;
+        }
+
+        .table-quarter {
+            width: 25%;
+        }
+
+
     </style>
   </body>
 </html>

@@ -1,5 +1,5 @@
 <?php
-    include_once('querybuilder.php');
+    require_once('querybuilder.php');
     $db = new QueryBuilder("sligro_groothandel");
 
     $facturen = $db->getFacturen();
